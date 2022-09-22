@@ -109,18 +109,9 @@ class MainActivity : AppCompatActivity() {
         textView!!.text = "Error"
     }
 
-    val isDeviceConnected: Boolean
-        get() {
-            val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val netInfo = cm.activeNetworkInfo
-            return netInfo != null && netInfo.isConnected
-        }
 
     private fun searchByName() {
-        if (!isDeviceConnected) {
-            Toast.makeText(this, "No connection!", Toast.LENGTH_LONG).show()
-            return
-        }
+
         val search = editText!!.text.toString()
         if (TextUtils.isEmpty(search)) {
             return
@@ -143,13 +134,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    var temperatureUnit: String?
-        get() = mSharedPref!!.getString(TEMPERATURE_UNIT_KEY, "metric")
-        set(value) {
-            val editor = mSharedPref!!.edit()
-            editor.putString(TEMPERATURE_UNIT_KEY, value)
-            editor.apply()
-        }
+    var temperatureUnit: String = "metric"
 
     inner class FindItemAdapter(context: Context, cities: ArrayList<WeatherManager.City>) :
         ArrayAdapter<WeatherManager.City>(context, 0, cities) {
@@ -168,19 +153,11 @@ class MainActivity : AppCompatActivity() {
                 description.setText(city?.description)
                 val metric: TextView = convertView.findViewById(R.id.metricTxt)
                 val units = temperatureUnit
-                if ("metric" == units) {
-                    metric.text = "ºC"
-                } else {
-                    metric.text = "ºF"
-                }
+                metric.text = "ºC"
                 val temp: TextView = convertView.findViewById(R.id.tempTxt)
                 temp.setText(city?.temperature)
                 val wind: TextView = convertView.findViewById(R.id.windTxt)
-                if ("metric" == units) {
-                    wind.setText(city?.wind.toString() + " m/s")
-                } else {
-                    wind.setText(city?.wind.toString() + " m/h")
-                }
+                wind.setText(city?.wind.toString() + " m/s")
                 val clouds: TextView = convertView.findViewById(R.id.cloudsTxt)
                 clouds.setText(city?.getClouds())
                 val pressure: TextView = convertView.findViewById(R.id.pressureTxt)

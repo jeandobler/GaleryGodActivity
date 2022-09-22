@@ -10,7 +10,6 @@ import retrofit2.http.Query
 import java.io.Serializable
 import java.text.DecimalFormat
 import java.util.*
-import java.util.List
 
 object WeatherManager {
     private const val API_URL = "http://api.openweathermap.org/data/2.5/"
