@@ -1,32 +1,32 @@
-package com.dobler.galerygodactivity
+package com.dobler.galerygodactivity.view
 
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.telecom.Call
 import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.View.OnKeyListener
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.dobler.galerygodactivity.WeatherManager.FindResult
+import com.dobler.galerygodactivity.R
+import com.dobler.galerygodactivity.data.WeatherManager
+import com.dobler.galerygodactivity.data.WeatherManager.FindResult
+import com.dobler.galerygodactivity.model.City
+import com.dobler.galerygodactivity.model.FindResult
 import kotlinx.android.synthetic.main.activity_main.*
-import okhttp3.Response
-import javax.security.auth.callback.Callback
 import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
     private var mSharedPref: SharedPreferences? = null
     private var mAdapter: FindItemAdapter? = null
-    private val cities: ArrayList<WeatherManager.City> = ArrayList()
+    private val cities: ArrayList<City> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -151,53 +151,6 @@ class MainActivity : AppCompatActivity() {
             editor.apply()
         }
 
-    inner class FindItemAdapter(context: Context, cities: ArrayList<WeatherManager.City>) :
-        ArrayAdapter<WeatherManager.City>(context, 0, cities) {
-
-
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-            var convertView = convertView
-            val city = getItem(position)
-            if (convertView == null) {
-                convertView = LayoutInflater.from(context)
-                    .inflate(R.layout.city_list_item, parent, false)
-
-                val cityName: TextView = convertView.findViewById(R.id.cityNameTxt)
-                cityName.setText(city?.title)
-                val description: TextView = convertView.findViewById(R.id.descriptionTxt)
-                description.setText(city?.description)
-                val metric: TextView = convertView.findViewById(R.id.metricTxt)
-                val units = temperatureUnit
-                if ("metric" == units) {
-                    metric.text = "ºC"
-                } else {
-                    metric.text = "ºF"
-                }
-                val temp: TextView = convertView.findViewById(R.id.tempTxt)
-                temp.setText(city?.temperature)
-                val wind: TextView = convertView.findViewById(R.id.windTxt)
-                if ("metric" == units) {
-                    wind.setText(city?.wind.toString() + " m/s")
-                } else {
-                    wind.setText(city?.wind.toString() + " m/h")
-                }
-                val clouds: TextView = convertView.findViewById(R.id.cloudsTxt)
-                clouds.setText(city?.getClouds())
-                val pressure: TextView = convertView.findViewById(R.id.pressureTxt)
-                pressure.setText(city?.pressure)
-                val resId = context.resources.getIdentifier(
-                    "w_" + city?.weather?.get(0)?.icon,
-                    "drawable",
-                    context.packageName
-                )
-                val icon: ImageView = convertView.findViewById(R.id.weatherIcon)
-                icon.setImageResource(resId)
-                return convertView
-
-            }
-            return parent
-        }
-    }
 
     companion object {
         private const val PREFERENCE_NAME = "com.rperazzo.weatherapp.shared"
