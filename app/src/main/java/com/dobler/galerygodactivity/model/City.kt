@@ -2,8 +2,7 @@ package com.dobler.galerygodactivity.model
 
 import java.io.Serializable
 import java.text.DecimalFormat
-import java.util.*
-import java.util.List
+import java.util.Locale
 
 class City : Serializable {
     var id: Int? = null

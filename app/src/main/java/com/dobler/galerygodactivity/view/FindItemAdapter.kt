@@ -10,7 +10,7 @@ import android.widget.TextView
 import com.dobler.galerygodactivity.R
 import com.dobler.galerygodactivity.model.City
 
-class FindItemAdapter(context: Context, cities: ArrayList<City>) :
+class FindItemAdapter(context: Context, cities: List<City>) :
     ArrayAdapter<City>(context, 0, cities) {
 
 
